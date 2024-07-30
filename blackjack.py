@@ -67,40 +67,40 @@ def main_window():
         dealer_hand=[]
         player_score=p_card2[1]+p_card1[1]
         dealer_score=d_card2[1]+d_card1[1]
-      
+
+        # if (dealer_score < 20 or player_score < 20) and (
+        #     p_card1[0] in ['🂡', '🂱', '🃁', '🃑'] or 
+        #     p_card2[0] in ['🂡', '🂱', '🃁', '🃑'] or 
+        #     d_card1[0] in ['🂡', '🂱', '🃁', '🃑'] or 
+        #     d_card2[0] in ['🂡', '🂱', '🃁', '🃑']
+        #                                         ):
+        #                                             player_score += 10
+        #                                             dealer_score += 10
         
-        def blackjack():
-            if player_score==21:
-                messagebox.showinfo("","BLACK JACK !!!")
-                reset_game()
-            elif dealer_score==21:
-                messagebox.showinfo("","BLACK JACK !!!")
-                reset_game()
-        blackjack()
-       
         # Define the game functions
         def new_card():
-            global player_hand, player_score,dealer_hand,dealer_score
+            global player_hand, player_score,dealer_hand,dealer_score,play_cards
             card2=random.choice(list(play_cards.items()))
             card = random.choice(list(play_cards.items()))
             dealer_hand.append(card2)
             player_hand.append(card)
             player_score += card[1]
             dealer_score  += card2[1]
-
+            
         def dealer_card():
             global dealer_hand, dealer_score
             card = random.choice(list(play_cards.items()))
             dealer_hand.append(card)
             dealer_score += card[1]
-
         bgd = tk.PhotoImage(file = "./images/cc.png") 
         labelbdg= tk.Label( root, image = bgd) 
         labelbdg.place(x = 0, y = 0) 
 
+        
+        
         def stand():
           
-            global dealer_score
+            global dealer_score,player_score
             dealer_show.config(text=f"DEALER :{dealer_score} >>>>> {d_card2[0]}  {d_card1[0]}{', '.join([card[0] for card in dealer_hand])}")
             if dealer_score > 21:
                 messagebox.showinfo("MATCH ", "YOU WON!")
@@ -115,7 +115,7 @@ def main_window():
                 reset_game()
                 newWindow.destroy()
             elif dealer_score == player_score:
-               new_card()
+               hit()
             while dealer_score < 21:
                 dealer_card()
                 
@@ -126,8 +126,9 @@ def main_window():
             player_score = 0
             dealer_score = 0
         def hit():
-            global player_hand, player_score
+            global player_hand, player_score,dealer_score,player_score
             new_card()
+            
             dealer_show.config(text=f"DEALER :{dealer_score} >>>>>> {d_card2[0]}  {d_card1[0]}{', '.join([card[0] for card in dealer_hand])}")
             your_show.config(text=f"YOU :{player_score} >>>>>> {p_card1[0]}{p_card2[0]} {', '.join([card[0] for card in player_hand])}")
             if player_score > 21:
@@ -156,6 +157,25 @@ def main_window():
                 messagebox.showinfo("MATCH ", "YOU WON!")
                 reset_game()
                 newWindow.destroy()
+        def blackjack():
+            if p_card1[0] in ["🂫",'🂻','🃋','🃛'] and p_card2[0] in ['🂡','🂱','🃁','🃑']:
+                messagebox.showinfo("","BLACK JACK !!! player won")
+                reset_game()
+                newWindow.destroy()
+            elif d_card1[0] in ["🂫",'🂻','🃋','🃛'] and d_card2[0] in ['🂡','🂱','🃁','🃑']:
+                messagebox.showinfo("","BLACK JACK !!! dealer won ")
+                reset_game()
+                newWindow.destroy()
+
+        blackjack()
+        if dealer_score and player_score +10 <21 :
+                if p_card2[0] in  ['🂡','🂱','🃁','🃑']  or p_card1[0] in  ['🂡','🂱','🃁','🃑']  :
+                        player_score+=9
+                elif d_card1[0] in  ['🂡','🂱','🃁','🃑'] or d_card2[0] in  ['🂡','🂱','🃁','🃑'] :
+                        dealer_score+=9
+        else :
+            pass
+       
            
             
         your_show = tk.Label(newWindow, text=f"YOU :{player_score} >>>>>> {p_card1[0]}{p_card2[0]} ", font=("Arial", 50,"bold"), background="green", foreground="white")
@@ -176,10 +196,10 @@ def main_window():
         your_cards=tk.Label(newWindow,text=" ")
         newWindow.configure(bg=("green"))
         global ti
-        ti=15
+        ti=5
         global second
         second= tk.Label(newWindow, text=f"you have {ti} second to make your decide   ", font=("Arial",32,"bold"),foreground="purple",background="red")
-        second.pack(pady=20)
+        second.grid(row=4)
                 
         def times_up():
             global ti
