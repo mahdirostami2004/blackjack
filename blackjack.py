@@ -129,8 +129,8 @@ def main_window():
             global player_hand, player_score,dealer_score,player_score
             new_card()
             
-            dealer_show.config(text=f"DEALER :{dealer_score} >>>>>> {d_card2[0]}  {d_card1[0]}{', '.join([card[0] for card in dealer_hand])}")
-            your_show.config(text=f"YOU :{player_score} >>>>>> {p_card1[0]}{p_card2[0]} {', '.join([card[0] for card in player_hand])}")
+            dealer_show.config(text=f"DEALER :{dealer_score} >>>>  {d_card2[0]}  {d_card1[0]}{', '.join([card[0] for card in dealer_hand])}")
+            your_show.config(text=f"YOU :{player_score} >>>>  {p_card1[0]}{p_card2[0]} {', '.join([card[0] for card in player_hand])}")
             if player_score > 21:
                 messagebox.showinfo("MATCH ", "YOU BUSTED!")
                 reset_game()
@@ -196,7 +196,7 @@ def main_window():
         your_cards=tk.Label(newWindow,text=" ")
         newWindow.configure(bg=("green"))
         global ti
-        ti=5
+        ti=9
         global second
         second= tk.Label(newWindow, text=f"you have {ti} second to make your decide   ", font=("Arial",32,"bold"),foreground="purple",background="red")
         second.grid(row=4)
@@ -212,7 +212,7 @@ def main_window():
                         
                 newWindow.destroy()  # Close the window
             
-            newWindow.mainloop()
+            newWindow.mainloop()    
         times_up()
         bga = tk.PhotoImage(file = "./images/cc.png") 
         labelbga= tk.Label( root, image = bga) 
